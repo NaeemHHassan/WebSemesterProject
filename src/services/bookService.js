@@ -1,8 +1,8 @@
 import http from "./httpService";
 import { apiUrl } from "../config.json";
 
-const apiEndpoint = apiUrl + "/users";
+const apiEndpoint = apiUrl + "/books";
 
 export function getBooks() {
-  return http.get(apiEndpoint + "/books");
+  return http.get(apiEndpoint);
 }

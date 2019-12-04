@@ -3,7 +3,7 @@ import authService from "../services/authService";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import SearchBox from "./searchBox";
-import bookService from "";
+import * as bookService from "../services/bookService";
 
 class Book extends Component {
   state = {
@@ -12,6 +12,7 @@ class Book extends Component {
 
   componentDidMount() {
     const result = bookService.getBooks();
+    console.log(result);
   }
 
   handleSearch = query => {
