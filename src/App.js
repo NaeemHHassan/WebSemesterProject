@@ -1,25 +1,43 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
-
+import React from "react";
+import "./App.css";
+import NavBar from "./components/navbar";
+import ShowBookCards from "./components/showBookCards";
+import Footer from "./components/footer";
+import LoginForm from "./components/loginForm";
+import { Route, Switch, Redirect } from "react-router-dom";
+import RegisterForm from "./components/registerForm";
+import NotFound from "./components/notFound";
+import DashBoard from "./components/dashBoard";
+import Logout from "./components/logout";
+import auth from "./services/authService";
+import { ToastContainer } from "react-toastify";
+import Users from "./components/user";
+import Book from "./components/books";
 function App() {
+  const user = auth.getCurrentUser();
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <React.Fragment>
+      <ToastContainer />
+      <NavBar user={user} />
+      <main
+        className="container-fluid"
+        style={{ backgroundColor: "rgb(245, 237, 233)" }}
+      >
+        <Switch>
+          <Route path="/home" component={ShowBookCards} />
+          <Route path="/login" component={LoginForm} />
+          <Route path="/logout" component={Logout} />
+          <Route path="/dashboard" component={DashBoard} />
+          <Route path="/signUp" component={RegisterForm} />
+          <Route path="/not-found" component={NotFound} />
+          <Route path="/users" component={Users} />
+          <Route path="/books" component={Book} />
+          <Redirect from="/" exact to="home" />
+          <Redirect to="/not-found" />
+        </Switch>
+        <Footer></Footer>
+      </main>
+    </React.Fragment>
   );
 }
 
