@@ -4,6 +4,7 @@ import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import SearchBox from "./searchBox";
 import * as bookService from "../services/bookService";
+import _ from "lodash";
 
 class ShowBookCards extends Component {
   state = {
@@ -11,41 +12,45 @@ class ShowBookCards extends Component {
     searchQuery: "",
     value: ""
   };
+
+  getColOfBooks = colNumber => {
+    const startIndex = colNumber * 3;
+    const re = _(this.state.books)
+      .slice(startIndex)
+      .take(3)
+      .value();
+    return re.map(i => (
+      <Col sm="4" align="center">
+        <BookCard
+          price={i.price}
+          name={i.title}
+          description={i.description}
+          author={i.author}
+          publicationDate={i.publicationDate}
+        ></BookCard>
+      </Col>
+    ));
+  };
   async componentDidMount() {
     const { data } = await bookService.getBooks();
     this.setState({ books: data });
   }
   handleSearch = query => {
     this.setState({ searchQuery: query });
-    console.log(this.state.searchQuery);
   };
   render() {
     const { searchQuery, books } = this.state;
-    let numberOfCols = books.length / 3;
-    let col = [];
-    if (numberOfCols < 1) {
-      numberOfCols = 3;
-      for (let i = 0; i < 3; i++) {
-        col.push("1");
-      }
-    } else {
-      for (let i = 0; i < numberOfCols; i++) {
-        col.push("1");
-      }
+    let numberOfCols = Math.ceil(books.length / 3);
+    let cols = [];
+    for (let i = 0; i < numberOfCols; i++) {
+      cols.push(i);
     }
+
     return (
       <React.Fragment>
         <SearchBox value={searchQuery} onChange={this.handleSearch} />
-        {books.map(i => (
-          <div align="center">
-            <BookCard
-              price={i.price}
-              name={i.title}
-              description={i.description}
-              author={i.author}
-              publicationDate={i.publicationDate}
-            ></BookCard>
-          </div>
+        {cols.map(i => (
+          <Row>{this.getColOfBooks(i)}</Row>
         ))}
       </React.Fragment>
     );
