@@ -10,3 +10,12 @@ export function register(user) {
     name: user.name
   });
 }
+
+export async function deleteAUser(_id) {
+  const api = apiEndpoint + "/" + _id;
+  return await http.delete(api);
+}
+
+export async function getAllUsers() {
+  return await http.get(apiEndpoint);
+}

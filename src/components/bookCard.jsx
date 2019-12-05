@@ -15,9 +15,8 @@ const BookCard = props => {
       }}
     >
       <Image
-        className="img"
         src={cardImg}
-        className="card-img-top img-fluid"
+        className="card-img-top img-fluid img"
         alt="..."
         style={{ width: "17.5rem" }}
       />

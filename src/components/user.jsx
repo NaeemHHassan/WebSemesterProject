@@ -1,21 +1,36 @@
 import React, { Component } from "react";
 import authService from "../services/authService";
+import * as userService from "../services/userService";
+import Button from "react-bootstrap/Button";
 import SearchBox from "./searchBox";
+import { toast } from "react-toastify";
 
 class Users extends Component {
   state = {
-    searchQuery: ""
+    searchQuery: "",
+    users: []
   };
 
+  async componentDidMount() {
+    const { data } = await userService.getAllUsers();
+    this.setState({ users: data });
+  }
   handleSearch = query => {
     this.setState({ searchQuery: query });
-    console.log(this.state.searchQuery);
   };
+
+  handleDelete = async book => {
+    await userService.deleteAUser(book._id);
+    const { data } = await userService.getAllUsers();
+    this.setState({ users: data });
+    toast.sucess("Deleted");
+  };
+
   render() {
-    if (!authService.isAdmin()) {
+    if (!authService.getCurrentUser()) {
       return <h1>Access Denied</h1>;
     }
-    const { searchQuery } = this.state;
+    const { searchQuery, users } = this.state;
     return (
       <React.Fragment>
         <h1>Showing Current Users in Database</h1>
@@ -29,36 +44,20 @@ class Users extends Component {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td scope="row">Naeem</td>
-              <td>3</td>
-              <td>
-                <a href="#.com">
-                  <i className="fa fa-eye" style={{ margin: "10px" }}></i>
-                </a>
-                <a href="#.com">
-                  <i className="fa fa-trash" style={{ margin: "10px" }}></i>
-                </a>
-                <a href="#.co">
-                  <i className="fa fa-edit" style={{ margin: "10px" }} x></i>
-                </a>
-              </td>
-            </tr>
-            <tr>
-              <td scope="row">Hassan</td>
-              <td>dasdasdsa</td>
-              <td>
-                <a href="#.com">
-                  <i className="fa fa-eye" style={{ margin: "10px" }}></i>
-                </a>
-                <a href="#.com">
-                  <i className="fa fa-trash" style={{ margin: "10px" }}></i>
-                </a>
-                <a href="#.co">
-                  <i className="fa fa-edit" style={{ margin: "10px" }} x></i>
-                </a>
-              </td>
-            </tr>
+            {users.map(u => (
+              <tr>
+                <td>{u.name}</td>
+                <td>{u.email}</td>
+                <td>
+                  <Button
+                    style={{ margin: "10px" }}
+                    onClick={() => this.handleDelete(u)}
+                  >
+                    <i className="fa fa-trash"></i>
+                  </Button>
+                </td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </React.Fragment>
