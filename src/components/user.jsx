@@ -53,7 +53,7 @@ class Users extends Component {
                     style={{ margin: "10px" }}
                     onClick={() => this.handleDelete(u)}
                   >
-                    <i className="fa fa-trash"></i>
+                    <i className="fa fa-trash"></i> Delete
                   </Button>
                 </td>
               </tr>

@@ -77,7 +77,7 @@ class Book extends Component {
               </thead>
               <tbody>
                 {this.state.books.map(b => (
-                  <tr>
+                  <tr key={b._id}>
                     <td>{b.title}</td>
                     <td>{b.author}</td>
                     <td>{b.price}</td>
@@ -89,7 +89,7 @@ class Book extends Component {
                         style={{ margin: "10px" }}
                         onClick={() => this.handleDelete(b)}
                       >
-                        <i className="fa fa-trash"></i>
+                        <i className="fa fa-trash"></i> Delete
                       </Button>
 
                       <Button
@@ -99,6 +99,7 @@ class Book extends Component {
                         }}
                       >
                         <i className="fa fa-edit" x></i>
+                        Update
                       </Button>
                     </td>
                   </tr>
