@@ -11,12 +11,29 @@ class NavBar extends Component {
     token: ""
   };
 
+  getTitle = totalItems => {
+    return (
+      <div>
+        Cart{" "}
+        <sup
+          style={{
+            color: "red"
+          }}
+        >
+          {totalItems}
+        </sup>
+      </div>
+    );
+  };
   componentDidMount = () => {
     const t = localStorage.getItem("token");
     this.setState({ token: t });
   };
 
   render() {
+    const { items } = this.props;
+    const totalItems = items.length;
+
     return (
       <div>
         <Navbar bg="light" expand="lg">
@@ -41,11 +58,25 @@ class NavBar extends Component {
                 </React.Fragment>
               )}
             </Nav>
-            <NavDropdown title="Cart" id="basic-nav-dropdown">
-              <NavDropdown.Item href="#action/3.2">Item 1</NavDropdown.Item>
-              <NavDropdown.Item href="#action/3.3">Item 2</NavDropdown.Item>
-              <NavDropdown.Divider />
-              <NavDropdown.Item href="#action/3.4">Item 3</NavDropdown.Item>
+            <NavDropdown
+              title={this.getTitle(totalItems)}
+              id="basic-nav-dropdown"
+            >
+              {items.map(it => (
+                <NavDropdown.Item>{it.title}</NavDropdown.Item>
+              ))}
+              {items.length === 0 && (
+                <NavDropdown.Item>
+                  <Button disabled="true ">Not hing to Show</Button>
+                </NavDropdown.Item>
+              )}
+              {items.length !== 0 && (
+                <NavDropdown.Item>
+                  <Link to="/checkOut">
+                    <Button>CheckOut</Button>
+                  </Link>
+                </NavDropdown.Item>
+              )}
             </NavDropdown>
 
             {!this.state.token && (

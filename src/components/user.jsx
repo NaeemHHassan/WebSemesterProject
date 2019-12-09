@@ -23,7 +23,7 @@ class Users extends Component {
     await userService.deleteAUser(book._id);
     const { data } = await userService.getAllUsers();
     this.setState({ users: data });
-    toast.sucess("Deleted");
+    toast.success("Deleted");
   };
 
   render() {
@@ -50,6 +50,7 @@ class Users extends Component {
                 <td>{u.email}</td>
                 <td>
                   <Button
+                    className="btn-danger"
                     style={{ margin: "10px" }}
                     onClick={() => this.handleDelete(u)}
                   >

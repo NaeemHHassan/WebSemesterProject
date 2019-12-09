@@ -86,6 +86,7 @@ class Book extends Component {
                     <td>{b.ratting}</td>
                     <td>
                       <Button
+                        className="btn-danger"
                         style={{ margin: "10px" }}
                         onClick={() => this.handleDelete(b)}
                       >
@@ -93,6 +94,7 @@ class Book extends Component {
                       </Button>
 
                       <Button
+                        className="btn-info"
                         style={{ margin: "10px" }}
                         onClick={() => {
                           this.handleUpdate(b);

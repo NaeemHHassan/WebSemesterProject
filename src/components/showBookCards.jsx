@@ -10,7 +10,8 @@ class ShowBookCards extends Component {
   state = {
     books: [],
     searchQuery: "",
-    value: ""
+    value: "",
+    itemsInCart: []
   };
 
   getColOfBooks = colNumber => {
@@ -22,7 +23,9 @@ class ShowBookCards extends Component {
     return re.map(i => (
       <Col sm="4" align="center">
         <BookCard
+          addItemToCart={this.props.addItemToCart}
           price={i.price}
+          _id={i._id}
           name={i.title}
           description={i.description}
           author={i.author}
@@ -45,7 +48,6 @@ class ShowBookCards extends Component {
     for (let i = 0; i < numberOfCols; i++) {
       cols.push(i);
     }
-
     return (
       <React.Fragment>
         <SearchBox value={searchQuery} onChange={this.handleSearch} />
