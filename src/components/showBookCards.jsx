@@ -51,6 +51,7 @@ class ShowBookCards extends Component {
     return (
       <React.Fragment>
         <SearchBox value={searchQuery} onChange={this.handleSearch} />
+
         {cols.map(i => (
           <Row>{this.getColOfBooks(i)}</Row>
         ))}

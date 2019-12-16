@@ -1,37 +1,29 @@
 import React, { Component } from "react";
 import * as bookService from "../services/bookService";
-import { toast } from "react-toastify";
 import img from "../images/productImage.jpg";
 import * as b from "react-bootstrap";
+import { toast } from "react-toastify";
 
 class ShowBookInfo extends Component {
   state = { book: "" };
 
-  componentDidMount() {}
-  render() {
-    try {
-      if (this.props.location._id) {
-        const jso = JSON.stringify(this.props.location._id).split(":")[1];
-        const newJsonc = jso.substring(0, jso.length - 1);
-
-        bookService
-          .getBookById(newJsonc)
-          .then(res => {
-            this.setState({ book: res.data });
-          })
-          .catch(e => {
-            console.log(e);
-          });
-        //console.log(res.data);
-      }
-    } catch (e) {
-      console.log(e);
+  async componentDidMount() {
+    if (this.props.location._id) {
+      const res = await bookService.getBookById(this.props.location._id._id);
+      this.setState({ book: res.data });
     }
+
     if (!this.props.location._id) {
       this.props.history.push("/home");
-      //return;
     }
+  }
 
+  handleAddToCart = () => {
+    this.props.addItemToCart(this.state.book._id);
+    this.props.history.push("/");
+    toast.success("Added To Cart");
+  };
+  render() {
     return (
       <React.Fragment>
         <b.Row>
@@ -41,7 +33,17 @@ class ShowBookInfo extends Component {
         </b.Row>
         <b.Row>
           <b.Col sm="6">
-            <b.Image src={img}></b.Image>
+            <b.Image src={img} style={{ width: "600px" }}></b.Image>
+          </b.Col>
+          <b.Col>
+            <h3>Description</h3>
+            <p>{this.state.book.description}</p>
+            <b.Button
+              className="btn btn-primary"
+              onClick={this.handleAddToCart}
+            >
+              Add To Cart
+            </b.Button>
           </b.Col>
         </b.Row>
       </React.Fragment>

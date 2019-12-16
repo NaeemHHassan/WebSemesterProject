@@ -7,10 +7,6 @@ import { Link, NavLink } from "react-router-dom";
 import authService from "../services/authService";
 
 class NavBar extends Component {
-  state = {
-    token: ""
-  };
-
   getTitle = totalItems => {
     return (
       <div>
@@ -25,18 +21,16 @@ class NavBar extends Component {
       </div>
     );
   };
-  componentDidMount = () => {
-    const t = localStorage.getItem("token");
-    this.setState({ token: t });
-  };
+  componentDidMount = () => {};
 
   render() {
     const { items } = this.props;
     const totalItems = items.length;
+    const currentUser = authService.getCurrentUser();
 
     return (
       <div>
-        <Navbar bg="light" expand="lg">
+        <Navbar bg="light" expand="lg" fixed="top">
           <Navbar.Brand>
             <Link className="navbar-brand" to="/home">
               BooksEasy
@@ -45,9 +39,11 @@ class NavBar extends Component {
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="mr-auto">
-              <Nav.Link href="#home">About</Nav.Link>
+              <Link to="/about">
+                <Nav.Link href="#home">About</Nav.Link>
+              </Link>
               <Nav.Link href="#link">Contact Us</Nav.Link>
-              {authService.getCurrentUser() && (
+              {currentUser && (
                 <React.Fragment>
                   <Nav.Link>
                     <Link to="/users">Users</Link>
@@ -79,7 +75,7 @@ class NavBar extends Component {
               )}
             </NavDropdown>
 
-            {!this.state.token && (
+            {!currentUser && (
               <NavLink
                 className="nav-item nav-link"
                 to="/login"
@@ -90,7 +86,7 @@ class NavBar extends Component {
                 </Button>
               </NavLink>
             )}
-            {!this.state.token && (
+            {!currentUser && (
               <NavLink
                 className="nav-item nav-link"
                 to="/signUp"
@@ -101,22 +97,37 @@ class NavBar extends Component {
                 </Button>
               </NavLink>
             )}
-            {this.state.token && (
+            {currentUser && (
               <NavDropdown title="Profile" id="basic-nav-dropdown">
-                <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
+                {/* <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item> */}
                 <NavDropdown.Item href="#action/3.2">
-                  Another action
+                  Setting
+                  <i
+                    class="fa fa-cog"
+                    style={{ margin: "15px" }}
+                    aria-hidden="true"
+                  ></i>
                 </NavDropdown.Item>
                 <NavDropdown.Item href="#action/3.3">
-                  Something
+                  Notifications
+                  <i
+                    class="fa fa-bell"
+                    style={{ margin: "15px" }}
+                    aria-hidden="true"
+                  ></i>
                 </NavDropdown.Item>
                 <NavDropdown.Divider />
                 <NavDropdown.Item href="#action/3.4">
-                  Separated link
+                  Chats
+                  <i
+                    class="fa fa-envelope"
+                    style={{ margin: "15px" }}
+                    aria-hidden="true"
+                  ></i>
                 </NavDropdown.Item>
               </NavDropdown>
             )}
-            {this.state.token && (
+            {currentUser && (
               <NavLink
                 className="nav-item nav-link"
                 to="/logout"

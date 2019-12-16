@@ -44,8 +44,7 @@ class AddNewBook extends Form {
       console.log(data);
       await bookService.addBook(data);
       toast.success("Book Saved");
-      const { state } = this.props.location;
-      window.location = state ? state.from.pathname : "/books";
+      this.props.history.push("/books");
     } catch (ex) {
       if (ex.response && ex.response.status === 400) {
         const errors = { ...this.state.errors };
