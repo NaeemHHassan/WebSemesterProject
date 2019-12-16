@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import CheckOutTableRow from "./checkOutTableRow";
+import Transaction from "./transaction";
 import * as cartService from "../services/cartService";
 import { toast } from "react-toastify";
 
@@ -8,12 +9,14 @@ class CheckOut extends Component {
     totalPrice: 0
   };
   checkOut = async () => {
-    await cartService.saveCart(this.props.items);
+    await cartService.saveCart(this.props.items, this.state.totalPrice);
     this.props.clearCart();
     this.props.history.push("/");
     toast.success("Success");
   };
-
+  saveTransaction1 = () => {
+    // saveTransaction();
+  };
   handleTotalCal = value => {
     const t = parseInt(this.state.totalPrice) + value;
     this.setState({ totalPrice: t });
@@ -24,7 +27,7 @@ class CheckOut extends Component {
     return (
       <React.Fragment>
         <h1 style={{ textAlign: "center" }}>CheckOut</h1>
-        <table class="table">
+        <table className="table">
           <thead>
             <tr>
               <th>Book Title</th>
@@ -39,15 +42,18 @@ class CheckOut extends Component {
               items={items}
               removeItemFromCart={removeItemFromCart}
               handleTotalCal={this.handleTotalCal}
+              {...this.props}
             ></CheckOutTableRow>
           </tbody>
         </table>
 
         {items.length !== 0 && (
           <div>
-            <button className="btn btn-primary" onClick={this.checkOut}>
-              CheckOut
-            </button>
+            <Transaction
+              items={this.props.items}
+              clearCart={this.props.clearCart}
+              checkOut={this.checkOut}
+            ></Transaction>
             <h5 style={{ textAlign: "center" }}>
               Total Price : {this.state.totalPrice}
             </h5>

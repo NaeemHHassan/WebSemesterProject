@@ -3,6 +3,7 @@ import "./App.css";
 import NavBar from "./components/navbar";
 import ShowBookCards from "./components/showBookCards";
 import Footer from "./components/footer";
+import About from "./components/about";
 import LoginForm from "./components/loginForm";
 import { Route, Switch, Redirect } from "react-router-dom";
 import RegisterForm from "./components/registerForm";
@@ -65,7 +66,7 @@ class App extends Component {
         <NavBar user={user} items={this.state.items} />
         <main
           className="container-fluid"
-          style={{ backgroundColor: "rgb(245, 237, 233)" }}
+          style={{ backgroundColor: "rgb(245, 237, 233)", paddingTop: "80px" }}
         >
           <Switch>
             <Route
@@ -80,10 +81,16 @@ class App extends Component {
             <Route path="/dashboard" component={DashBoard} />
             <Route path="/signUp" component={RegisterForm} />
             <Route path="/not-found" component={NotFound} />
+            <Route path="/about" component={About} />
             <Route path="/users" component={Users} />
             <Route path="/books" component={Book} />
             <Route path="/updateABook" component={UpdateABook} />
-            <Route path="/showBookInfo" component={ShowBookInfo}></Route>
+            <Route
+              path="/showBookInfo"
+              render={props => (
+                <ShowBookInfo {...props} addItemToCart={this.addItemToCart} />
+              )}
+            />
             <Route
               path="/checkOut"
               render={props => (

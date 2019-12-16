@@ -7,8 +7,7 @@ export async function getBooks() {
   return await http.get(apiEndpoint);
 }
 export async function addBook(book) {
-  console.log("book is ");
-  console.log(book);
+
   return http.post(apiEndpoint, {
     title: book.title,
     author: book.author,
@@ -38,6 +37,5 @@ export async function getBookById(id) {
 }
 export async function deleteABook(_id) {
   const api = apiEndpoint + "/" + _id;
-  console.log(api);
   await http.delete(api);
 }
